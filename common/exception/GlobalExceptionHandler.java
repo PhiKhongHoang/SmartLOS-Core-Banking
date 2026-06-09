@@ -81,6 +81,24 @@ public class GlobalExceptionHandler {
                 "INTERNAL_ERROR",
                 "Lỗi hệ thống");
     }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
+            IllegalArgumentException ex) {
+
+    	return build(HttpStatus.BAD_REQUEST,
+                "BAD_REQUEST",
+                ex.getMessage());
+    }
+    
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessException(
+            BusinessException ex) {
+
+    	return build(HttpStatus.BAD_REQUEST,
+                "BAD_REQUEST",
+                ex.getMessage());
+    }
 
     // =========================
     // common response builder
