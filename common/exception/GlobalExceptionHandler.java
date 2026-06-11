@@ -99,6 +99,26 @@ public class GlobalExceptionHandler {
                 "BAD_REQUEST",
                 ex.getMessage());
     }
+    
+    @ExceptionHandler(
+            UserNotFoundException.class)
+    public ResponseEntity<?> handle(
+            UserNotFoundException ex){
+    	
+        return build(HttpStatus.NOT_FOUND,
+                "NOT_FOUND",
+                ex.getMessage());
+    }
+    
+    @ExceptionHandler(
+            UnauthorizedException.class)
+    public ResponseEntity<?> handle(
+    		UnauthorizedException ex){
+    	
+        return build(HttpStatus.UNAUTHORIZED,
+                "UNAUTHORIZED",
+                ex.getMessage());
+    }
 
     // =========================
     // common response builder
