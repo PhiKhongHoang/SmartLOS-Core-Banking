@@ -17,6 +17,8 @@ import com.ktn3.core_banking.limit_management.dto.LimitManagementSearchRequest;
 import com.ktn3.core_banking.limit_management.entity.LimitManagement;
 import com.ktn3.core_banking.limit_management.repository.LimitManagementRepository;
 import com.ktn3.core_banking.limit_management.service.LimitManagementService;
+import com.ktn3.core_banking.org.dto.OrgIdNameResponse;
+import com.ktn3.core_banking.org.repository.OrgUnitRepository;
 import com.ktn3.core_banking.security.service.CurrentUserService;
 import com.ktn3.core_banking.user.dto.UserResponse;
 
@@ -29,6 +31,7 @@ public class LimitManagementServiceImpl implements LimitManagementService{
 	
 	private final LimitManagementRepository limitManagementRepository;
 	private final CurrentUserService currentUserService;
+	private final OrgUnitRepository orgUnitRepository;
 
 	@Override
 	public LimitManagementResponse update(LimitManagementRequest request) {
@@ -43,10 +46,18 @@ public class LimitManagementServiceImpl implements LimitManagementService{
 				.build();
 		limitManagement = limitManagementRepository.save(limitManagement);
 		
+		OrgIdNameResponse orgIdNameResponse = new OrgIdNameResponse();
+		
+		Long id = limitManagement.getOrgId();
+		String orgName = orgUnitRepository.findNameById(id);
+		
+		orgIdNameResponse.setId(id);
+		orgIdNameResponse.setName(orgName);
+		
 		return LimitManagementResponse.builder()
 				.id(limitManagement.getId())
 				.groupName(limitManagement.getGroupName())
-				.orgId(limitManagement.getOrgId())
+				.orgResponse(orgIdNameResponse)
 				.limitVnd(limitManagement.getLimitVnd())
 				.limitVndStr(MoneyUtils.formatMoney(limitManagement.getLimitVnd(), "VND"))
 				.limitUsd(limitManagement.getLimitUsd())
@@ -68,10 +79,17 @@ public class LimitManagementServiceImpl implements LimitManagementService{
 		
 		LimitManagementResponse limitManagementResponse = new LimitManagementResponse();
 		if(limitManagement != null) {
+			OrgIdNameResponse orgIdNameResponse = new OrgIdNameResponse();
+			
+			String orgName = orgUnitRepository.findNameById(id);
+			
+			orgIdNameResponse.setId(id);
+			orgIdNameResponse.setName(orgName);
+			
 			limitManagementResponse = LimitManagementResponse.builder()
 					.id(limitManagement.getId())
 					.groupName(limitManagement.getGroupName())
-					.orgId(limitManagement.getOrgId())
+					.orgResponse(orgIdNameResponse)
 					.limitVnd(limitManagement.getLimitVnd())
 					.limitVndStr(MoneyUtils.formatMoney(limitManagement.getLimitVnd(), "VND"))
 					.limitUsd(limitManagement.getLimitUsd())
@@ -144,10 +162,14 @@ public class LimitManagementServiceImpl implements LimitManagementService{
 	            .build();
 	}
 	
-	private
-    LimitManagementResponse
-    map(
-            LimitManagement entity) {
+	private LimitManagementResponse map(LimitManagement entity) {
+		OrgIdNameResponse orgIdNameResponse = new OrgIdNameResponse();
+		
+		Long id = entity.getOrgId();
+		String orgName = orgUnitRepository.findNameById(id);
+		
+		orgIdNameResponse.setId(id);
+		orgIdNameResponse.setName(orgName);
 
         return LimitManagementResponse
                 .builder()
@@ -157,8 +179,7 @@ public class LimitManagementServiceImpl implements LimitManagementService{
                 
                 .groupName(entity.getGroupName())
 
-                .orgId(
-                        entity.getOrgId())
+                .orgResponse(orgIdNameResponse)
                 
 				.limitVnd(entity.getLimitVnd())
 				.limitVndStr(MoneyUtils.formatMoney(entity.getLimitVnd(), "VND"))

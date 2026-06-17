@@ -2,6 +2,7 @@ package com.ktn3.core_banking.limit_management.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.ktn3.core_banking.org.dto.OrgIdNameResponse;
 
@@ -16,18 +17,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LimitManagementResponse {
-	private Long id;
-	
+public class LimitGroupManagementResponse {
+
 	private String groupName;
-	
-	private OrgIdNameResponse orgResponse;
-	
-	private BigDecimal limitVnd;
-	private String limitVndStr;
-	
-	private BigDecimal limitUsd;
-	private String limitUsdStr;
+	private List<OrgIdNameResponse> orgResponses;
 	
 	private BigDecimal groupLimitVnd;
 	private String groupLimitVndStr;

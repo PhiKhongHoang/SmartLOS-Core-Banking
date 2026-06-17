@@ -9,8 +9,9 @@ import com.ktn3.core_banking.limit_management.dto.LimitManagementSearchRequest;
 
 public interface LimitManagementService {
 	LimitManagementResponse update(LimitManagementRequest request);
+	
 	LimitManagementResponse findById(Long id);
-	// còn thiếu search(String group, Long orgId) 
+	
 	PageResponse<LimitManagementResponse> search(
 			LimitManagementSearchRequest request,
 		    Pageable pageable);

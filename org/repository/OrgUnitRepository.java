@@ -11,6 +11,14 @@ import com.ktn3.core_banking.org.entity.OrgUnit;
 
 @Repository
 public interface OrgUnitRepository extends JpaRepository<OrgUnit, Long>{
+
+	@Query("""
+	           select o.name
+	           from OrgUnit o
+	           where o.id = :id
+	           """)
+	    String findNameById(@Param("id") Long id);
+	
 	Boolean existsByCode(String code);
 	
 	List<OrgUnit> findByParentId(Long parentId);

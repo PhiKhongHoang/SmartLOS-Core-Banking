@@ -9,5 +9,5 @@ import com.ktn3.core_banking.limit_management.entity.LimitManagement;
 @Repository
 public interface LimitManagementRepository extends JpaRepository<LimitManagement, Long>,
 					JpaSpecificationExecutor<LimitManagement> {
-	
+	void deleteAllByGroupName(String groupName);
 }
