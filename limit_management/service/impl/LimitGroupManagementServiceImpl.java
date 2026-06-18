@@ -40,38 +40,38 @@ public class LimitGroupManagementServiceImpl implements LimitGroupManagementServ
 			// b1: xóa all list cũ
 			limitManagementRepository.deleteAllByGroupName(groupName);
 			
-			// b2: tạo all list mới, set value thành value mới
+			// b2: tạo all list mới
+			List<OrgIdNameResponse> orgResponses = new ArrayList<>();
+			
 			if(request != null
 					&& request.getOrgIds() != null
 					&& request.getOrgIds().size() > 0) {
 				for(Long id : request.getOrgIds()) {
-					LimitManagement limitManagement = limitManagementRepository.findById(id)
-							.orElse(null);
-					if(limitManagement != null) {
-						limitManagement.setGroupName(groupName);
-						limitManagement.setLimitVnd(request.getGroupLimitVnd());
-						limitManagement.setGroupLimitVnd(request.getGroupLimitVnd());
-						limitManagement.setLimitUsd(request.getGroupLimitUsd());
-						limitManagement.setGroupLimitUsd(request.getGroupLimitUsd());
-						limitManagement.setUpdatedAt(LocalDateTime.now());
-						limitManagement.setUpdatedBy(userResponse.getId());
+					String orgName = orgUnitRepository.findNameById(id);
+					
+					if(orgName != null && !"".equals(orgName)) {
+						OrgIdNameResponse response = new OrgIdNameResponse();
+					    response.setId(id);
+					    response.setName(orgName);
 						
+					    orgResponses.add(response);
+					    
+						LimitManagement limitManagement = LimitManagement
+								.builder()
+								.orgId(id)
+								.groupName(groupName)
+								.limitVnd(request.getGroupLimitVnd())
+								.groupLimitVnd(request.getGroupLimitVnd())
+								.limitUsd(request.getGroupLimitUsd())
+								.groupLimitUsd(request.getGroupLimitUsd())
+								.updatedAt(LocalDateTime.now())
+								.updatedBy(userResponse.getId())
+								.build();
+
 						limitManagement = limitManagementRepository.save(limitManagement);
 					}
 					
 				}
-			}
-			
-			List<OrgIdNameResponse> orgResponses = new ArrayList<>();
-
-			for (Long id : request.getOrgIds()) {
-			    String orgName = orgUnitRepository.findNameById(id);
-
-			    OrgIdNameResponse response = new OrgIdNameResponse();
-			    response.setId(id);
-			    response.setName(orgName);
-
-			    orgResponses.add(response);
 			}
 			
 			LimitGroupManagementResponse limitGroupManagementResponse = 
@@ -98,6 +98,13 @@ public class LimitGroupManagementServiceImpl implements LimitGroupManagementServ
 
 	@Override
 	public LimitGroupManagementResponse findByGroupName(String groupName) {
+		try {
+//			LimitGroupManagementResponse response = 
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
