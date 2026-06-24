@@ -52,7 +52,7 @@ public class LimitGroupManagementController {
 	
 	@GetMapping("/{group-name}")
     public ResponseEntity<ApiResponse<LimitGroupManagementResponse>> 
-				findById(@PathVariable("group-name") String groupName){
+				findByGroupName(@PathVariable("group-name") String groupName){
 
 		LimitGroupManagementResponse result = limitGroupManagementService.findByGroupName(groupName);
 		
